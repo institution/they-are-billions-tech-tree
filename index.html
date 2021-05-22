@@ -2,6 +2,119 @@
 <head>
 <title>They Are Billions Tech Tree Calculator</title>
 <script>
+  // ["Type","Name","Effect","Points","Requirements","x","y"],
+  const tech = [
+    ["Economy Tech","Steam Tech","Basic Steam Tech","0","","0","4"],
+
+    ["Economy Tech","Bearings and Pulleys","Fisherman Cottage: Food+20%","100","Steam Tech","1","1"],
+    ["Unit","Assault Rifle","New Unit: Soldier","120","Steam Tech","1","3"],
+    ["Military Tech","Mercenaries I","Extra Unit: Ranger","100","Steam Tech","1","5"],
+    ["Military Building","High-Rise Def I","New Structure: Wood Tower","100","Steam Tech","1","6"],
+    ["Economy Tech","Logistics","Command Center: Gold+40 and Storage+20","100","Steam Tech","1","8"],
+
+    ["Economy Tech","Efficient Turbines","Mill: Energy+30%","120","Bearings and Pulleys","2","1"],
+    ["Military Tech","Military Tech Training","Buildings: Def+20%\nExtra Unit: Soldier","100","Assault Rifle","2","2"],
+    ["Economy Tech","Hunting Weapons","Hunters Cottage: Food+20%","100","Assault Rifle","2","3"],
+    ["Military Tech","Mercenaries II","Extra Unit: Sniper","100","Mercenaries I","2","5"],
+    ["Military Tech","Wood Buttresses","Wood Defenses: Life+20%","120","High-Rise Def I","2","6"],
+    ["Economy Tech","Basic Supplies","Command Center: Food+20\nEnergy+20","100","Logistics","2","7"],
+    ["Economy Tech\nTrain","Gold Transportation","Train Gold+200 (every 24h)","120","Logistics","2","9"],
+
+    ["Economy Building","Expert Workshops","New Structure: Wood Workshop\nNew Structure: Cottage","240","Steam Tech","3","4"],
+    ["Economy Building","Mechanized Storage","New Structure: Warehouse","120","Expert Workshop\nLogistics","3","8"],
+
+    ["Economy Building","Cereal Farming","New Structure: Farm","120","Expert Workshops","4","1"],
+    ["Military Tech","Reinforced Armor","Soldier: Armor+20%","100","Expert Workshops","4","2"],
+    ["Military Tech","Reinforced Projectiles","Ranger: Damage+20%","100","Expert Workshops","4","3"],
+    ["Military Tech","Optics","Command Center: Range+5","100","Expert Workshops","4","5"],
+    ["Military Building","Barricades","New Structure: Stakes Trap","80","Expert Workshops\nWood Buttresses","4","6"],
+    ["Military Tech","Medicine","Soldier: Life+20%\nRanger: Life+20%\nSniper: Life+20%","140","Expert Workshops\nBasic Supplies","4","7"],
+    ["Economy Tech","Structure Recycling","Structures: +30% destroying refund","140","Expert Workshops\nMechanized Storage","4","8"],
+    ["Economy Tech\nTrain","Wood Transportation","Train Wood+15 (every 24h)","140","Expert Workshops\nGold Transportation","4","9"],
+
+    ["Economy Building","Commerce","New Structure: Market","120","Expert Workshops\nCereal Farming","5","1"],
+    ["Military Tech","Professional Soldier","Extra Unit: Soldier","80","Expert Workshops\nReinforced Armor","5","2"],
+    ["Military Building","Mechanized Weapons","New Structure: Great Ballista","140","Expert Workshops\nReinforced Projectiles","5","3"],
+    ["Military Building","Advanced Lens","New Structure: Lookout Tower","120","Expert Workshops\nOptics","5","5"],
+    ["Military Tech","Long Range Rifle","Soldier: View Range+1 and Attack Range+1","100","Expert Workshops\nOptics","5","6"],
+    ["Research Tech","Advanced Laboratory","Research: Time-25%","120","Expert Workshops\nMedicine","5","7"],
+    ["Economy Tech","Corpse Recycling","Infected Kill: Gold+1","100","Expert Workshops\nStructure Recycling","5","8"],
+
+    ["Economy Building\nMilitary Building","Lodging","New Structure: Inn","140","Expert Workshops\nCommerce","6","0"],
+    ["Military Tech","Prefabricated Parts","Extra Building: Great Ballista","100","Expert Workshops\nMechanized Weapons","6","3"],
+    ["Unit","Telescopic Sight","New Unit: Sniper","140","Expert Workshops\nAdvanced Lens","6","5"],
+    ["Military Building","Global Vision","Wonder: The Silent Beholder","200","Expert Workshops\nLong Range Rifle","6","6"],
+    ["Economy Tech\nTrain","Stone Transportation","Train Stone+8 (every 24h)","160","Expert Workshops\nWood Transportation","6","9"],
+
+    ["Military Tech","Games and Gambling","Inn: Mercenaries every 3 days","120","Expert Workshops\nLodging","7","0"],
+    ["Economy Building","Advanced Construction","New Structure: Stone Workshop\nNew Structure: Stone House","260","Expert Workshops","7","4"],
+
+    ["Economy Tech","Tesla Coils","Command Center: Energy Radius+4 and Energy+20%","100","Advanced Construction","8","1"],
+    ["Economy Building","Thermal Energy","New Structure: Power Plant","120","Advanced Construction","8","2"],
+    ["Military Tech","Advanced Training","Soldier: Training Time -10%\nRanger: Training Time -10%\nSniper: Training Time -10%","100","Advanced Construction","8","3"],
+    ["Military Building","Concrete","New Structure: Stone Wall\nNew Structure: Stone Gate","120","Advanced Construction","8","5"],
+    ["Military Tech","Chemistry","Soldier: Damage+20%","120","Advanced Construction","8","7"],
+    ["Economy Tech\nTrain","Iron Transportation","Train Iron+6 (every 24h)","200","Advanced Construction\nStone Transportation","8","9"],
+
+    ["Economy Tech","Advanced Tesla Transfer","Tesla Tower: Energy Radius+1\nView+1","200","Advanced Construction\nTesla Coils","9","0"],
+    ["Military Building","Explosives","New Structure: Land Mines","120","Advanced Construction\nThermal Energy","9","2"],
+    ["Military Tech","Military Tech Tactics","Units: Vet Exp-20%","120","Advanced Construction\nAdvanced Training","9","3"],
+    ["Economy Building","Currency","New Structure: Bank","140","Advanced Construction\nConcrete","9","5"],
+    ["Military Building","High-Rise Def II","New Structure: Stone Tower","80","Advanced Construction\nConcrete","9","6"],
+    ["Economy Tech","Insulating Materials","Cottage: Energy-1\nStone House: Energy-2","140","Advanced Construction\nChemistry","9","7"],
+    ["Military Building","Autonomous Weapons","New Structure: Wasp","120","Advanced Construction\nChemistry","9","8"],
+
+    ["Military Building","Plasma Spheres","New Structure: Shocking Tower","140","Advanced Construction\nTesla Coils","10","1"],
+    ["Military Building","Military Tech Mastery","Wonder: The Academy of Immortals","200","Advanced Construction\nMilitary Tactics","10","3"],
+    ["Economy Tech","Black Market","Infected Kill: Gold+1","140","Advanced Construction\nCurrency","10","5"],
+    ["Military Tech","Reinforced Concrete","Stone Defenses: Life+20%","140","Advanced Construction\nHigh-Rise Def II","10","6"],
+    ["Economy Building","Climate Control","Wonder: The Crystal Palace","200","Advanced Construction\nInsulating Materials","10","7"],
+    ["Military Building","Armored Attack Station","New Structure: Advanced Outpost\nEmpire Points+200\n(Infected Swarm Missions)","120","Advanced Construction\nAutonomous Weapons","10","8"],
+
+    ["Military Tech","High Voltage Ionizer","Shocking Tower: Range+1","180","Advanced Construction\nPlasma Spheres","11","1"],
+    ["Economy Building\nMilitary Building","Advanced Machinery","New Structure: Foundry\nNew Structure: Oil Platform","280","Advanced Construction","11","4"],
+    ["Economy Building","Bronze Forging","Wonder: The Victorious","200","Advanced Construction\nReinforced Concrete","11","6"],
+    ["Military Tech","Monuments","Inn: Prestige+50%","120","Advanced Construction\nClimate Control","11","7"],
+
+    ["Economy Building","Ray Condenser","Wonder: The Lightning Spire","200","Advanced Machinery\nAdvanced Tesla Transfer","12","0"],
+    ["Building\nUnit","Mechanical Engineering","New Structure: Engineering Center\nNew Unit: Lucifer","160","Advanced Machinery","12","2"],
+    ["Economy Building","Steel Turbines","New Structure: Advanced Mill","140","Advanced Machinery","12","3"],
+    ["Economy Building","Biochemistry","New Structure: Advanced Farm","160","Advanced Machinery","12","5"],
+    ["Military Tech","Titanium","Buildings: Def+10%","120","Advanced Machinery","12","7"],
+    ["Economy Tech\nTrain","Oil Transportation","Train Oil+5 (Every 24h)","240","Advanced Machinery\nIron Transportation","12","9"],
+
+    ["Economy Tech","Pneumatic Joints","Oil Platform: Oil+1","120","Advanced Machinery\nMechanical Engineering","13","1"],
+    ["Military Building","Radar","New Structure: Radar Tower","140","Advanced Machinery\nMechanical Engineering","13","2"],
+    ["Research","Advanced Research","Research: Time-25%","140","Advanced Machinery\nSteel Turbines","13","3"],
+    ["Economy Tech","Tungsten Saw","Sawmill: Wood+10%","120","Advanced Machinery\nTitanium","13","6"],
+    ["Economy Building","Tungsten Tools","New Structure: Advanced Quarry","160","Advanced Machinery\nTitanium","13","7"],
+    ["Military Building","Barbed Wire","New Structure: Wire Fence Trap","120","Advanced Machinery\nTitanium","13","8"],
+
+    ["Unit","Mechanical Exoskeletons","New Unit: Thanatos","180","Advanced Machinery\nPneumatic Joints","14","0"],
+    ["Unit","Articulated Vehicles","New Unit: Titan","180","Advanced Machinery\nPneumatic Joints","14","1"],
+    ["Military Building","Combat Artillery","New Structure: Executor","180","Advanced Machinery\nRadar","14","2"],
+    ["Economy Building","Chemical Transmutation","Wonder: The Atlas Transmutator","200","Advanced Machinery\nBiochemistry","14","5"],
+    ["Military Tech","Carbon Steel","Wire Fence Trap: Life+30%","140","Advanced Machinery\nBarbed Wire","14","8"],
+
+    ["Economy Tech","High Technology","Structures: Build Time-10%","300","Advanced Machinery","15","4"],
+    ["Economy Tech\nTrain","Ingot Transportation","Train Gold+300 (Every 24h)","300","High Technology\nOil Transportation","15","9"],
+
+    ["Military Tech","Advanced Munitions","Soldier: Damage+30%","180","High Technology\nAssault Rifle","16","0"],
+    ["Military Tech","Nanomaterials","Units: Armor+5%","200","High Technology","16","2"],
+    ["Military Tech","Superconductors","Shocking Tower: Energy-30%","180","High Technology","16","6"],
+    ["Military Tech","Music","Inn: Mercs q2days","200","High Technology\nGames and Gambling","16","8"],
+
+    ["Military Tech","Laser","Titan: Damage+25%","200","High Technology\nArticulated Vehicles\nAdvanced Ammunition","17","0"],
+    ["Unit","Genetic Engineering","New Unit: Mutant","300","High Technology\nMechanical Engineering\nNanomaterials","17","1"],
+    ["Military Tech","Augmented Reality","Sniper: Range+1\nDamage+20%","220","High Technology\nTelescopic Sight\nNanomaterials","17","2"],
+    ["Economy Tech","Diamond Tools","Advanced Quarry: Mining+20%","240","High Technology\nTungsten Tools\nNanomaterials","17","3"],
+    ["Military Tech","High Plasma Energy","Shocking Tower: Range+1","220","High Technology\nSuperconductors","17","5"],
+    ["Economy Tech","Optimal Tesla Transfer","Tesla Tower: Range+1","240","High Technology\nSuperconductors","17","6"],
+    ["Economy Tech","Solar Energy","Buildings: Energy-20%","240","High Technology\nSuperconductors","17","7"],
+    ["Economy Tech","Deep Drilling","Oil Platform: Oil+20%","240","High Technology\nSuperconductors","17","8"],
+    ["Military Tech\nTrain","Artillery Transportation","Train Wasp+1 (Every 24h)","400","High Technology\nIngot Transportation","17","9"],
+  ]
+  
   window.onload = function() {
     var canvas=document.getElementById("canvas");
     var context=canvas.getContext('2d');
