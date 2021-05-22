@@ -1,8 +1,19 @@
 <html>
 <head>
-  <title>They Are Billions Tech Tree Calculator</title>
+<title>They Are Billions Tech Tree Calculator</title>
+<script>
+  window.onload = function() {
+    var canvas=document.getElementById("canvas");
+    var context=canvas.getContext('2d');
+    var image=new Image();
+    image.onload=function(){
+      context.drawImage(image,0,0,canvas.width,canvas.height);
+    };
+    image.src="bg.png";
+  };
+</script>
 </head>
 <body>
-  
+<canvas id="canvas" width="100%" height="665">tech tree</canvas>
 </body>
 </html>
