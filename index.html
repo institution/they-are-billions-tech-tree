@@ -175,8 +175,24 @@ function toggle_tech(t) {
 	else {
 		deactivate_tech(t);
 	}
-	
+
 	document.getElementById("used").innerHTML = used_points.toString();
+}
+
+function show_tech(t) {
+	document.getElementById("desc").innerHTML = t[tName]+"\n\n"+t[tEffect];
+}
+
+function get_tech_by_mouse_pos(e) {
+	var gx = Math.trunc((e.offsetX-27+bg_pos)/300);
+	var gy = Math.trunc((e.offsetY-15)/63);
+	
+	for(var t of tech) {
+		if (t[tX] == gx && t[tY] == gy) {
+			return t;
+		}
+	}
+	return null;
 }
 
 var bg=new Image();
@@ -215,16 +231,12 @@ window.onload = function() {
 		render();
 	  }	  
 	  
-	  if (total_scrolled <= 5) {
-	    var gx = Math.trunc((e.offsetX-27+bg_pos)/300);
-		var gy = Math.trunc((e.offsetY-15)/63);
-		
-        for(var t of tech) {
-			if (t[tX] == gx && t[tY] == gy) {
-				toggle_tech(t);
-			}
+	  if (total_scrolled <= 5) {	    
+	    var t = get_tech_by_mouse_pos(e);
+		if (t != null) {
+			toggle_tech(t);
+			render();
 		}
-		render();
 	  }
 	  
 	  
@@ -239,7 +251,12 @@ window.onload = function() {
 		total_scrolled += Math.abs(dx);
 		
 		render();
-	  }	  
+	  }
+
+		var t = get_tech_by_mouse_pos(e);
+		if (t != null) {
+			show_tech(t);
+		}
 	});
 	
 	document.addEventListener('keypress', e => {
@@ -265,7 +282,7 @@ function render(){
 	  
 	  
 	context.strokeStyle = 'white';
-	context.lineWidth = 4;
+	context.lineWidth = 2;
 	for(var t of tech) {
 		if (t[tActive]) {
 			var x = t[tX] * 300 + 27 - bg_pos;
@@ -282,7 +299,8 @@ function render(){
 </head>
 <body>
 <h1>They Are Billions Tech Tree Calculator</h1>
-<h2>Tech points used: <span id="used">0</span>/10000</h2>
 <canvas id="canvas" width="1900" height="665">tech tree</canvas>
+<h2>Tech points used: <span id="used">0</span>/10000</h2>
+<pre id="desc"></pre>
 </body>
 </html>
